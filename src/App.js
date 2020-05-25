@@ -70,14 +70,33 @@ class Input extends Component {
   }
 
   handleKeyPress = async(event) => {
+    // ensure the text isn't including an auto-suggestion, i.e. text is not yet valid
     if (event.key === "Enter") {
-      this.postMessage();
-      this.setState({ value: "" });
+      // use added space to trigger word check
+      const retval = await this.fetchData(this.state.value+" ");
+      if (retval.value.includes("[")) {
+        this.setState({ value: retval.value, error: "INVALID" });
+      } else {
+        this.postMessage();
+        this.setState({ value: "" });
+      }
     } else {
-      const retval = await this.fetchData(this.state.value + event.key);
-      //console.log(this.state.value, retval.value);
-      this.setState({ value: retval.value, error: "" });
-    };
+      var c = null;
+      if (this.state.value.includes("[")) {
+        const i = this.state.value.indexOf("[");
+        // remove suggestion when typing continues
+        c = this.state.value.slice(0,i);
+      } else {
+        c = this.state.value;
+      }
+      if (event.which >= 32 && event.which <= 126) {
+        const retval = await this.fetchData(c + event.key);
+        console.log(this.state.value, "--", c, "--", retval.value);
+        this.setState({ value: retval.value, error: "" });
+      } else {
+        this.setState({ value: c, error: ""})
+      };
+    }
   }
 
   render() {

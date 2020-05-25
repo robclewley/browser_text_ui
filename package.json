@@ -1,6 +1,17 @@
 {
   "name": "browser_text_ui",
   "version": "0.1.0",
+  "description": "text game UI",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robclewley/browser_text_ui.git"
+  },
+  "author": "Rob Clewley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/robclewley/browser_text_ui/issues"
+  },
   "private": true,
   "dependencies": {
     "@g07cha/flexbox-react": "^5.0.0",
