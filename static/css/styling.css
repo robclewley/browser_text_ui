@@ -1,0 +1,52 @@
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+
+.flex-grid {
+  color: white;
+  display: flex;
+  margin: auto -1rem 1rem;
+  min-height: 700px;
+  max-height: 700px;
+}
+
+.col {
+  background-color: black;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  padding: 1rem;
+}
+
+.sidebar-left {
+  flex: 1;
+}
+
+.sidebar-right {
+  flex: 2;
+}
+
+.main {
+  flex: 5;
+
+}
+
+.main .history {
+  overflow-y: scroll;
+  height: 80%;
+
+}
+
+.main .input {
+  border: 2px solid blue;
+  height: 15%;
+}
+
+*,
+:before,
+:after {
+  box-sizing: border-box;
+}
