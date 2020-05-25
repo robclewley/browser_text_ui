@@ -18,7 +18,7 @@ const WrappedListComponent = (result) => {
 
 const getNewData = async () => {
   const result = await axios(
-    `http://localhost:5000/all_messages`,
+    `http://localhost:8080/all_messages`,
   );
   return result;
 };
@@ -30,7 +30,7 @@ const onPollInterval = (props, dispatch) => {
 
 const getNewData = async () => {
   const result = await axios(
-    `http://localhost:5000/all_messages`,
+    `http://localhost:8080/all_messages`,
   );
   return result;
 };
@@ -45,20 +45,21 @@ class Input extends Component {
       active: (props.locked && props.active) || false,
       value: props.value || "",
       error: props.error || "",
-      label: props.label || "Label"
+      label: props.label || "Label",
+      session_id: props.session_id
     };
   }
 
   postMessage = async () => {
     const result = await axios(
-      `http://localhost:5000/post/${this.state.value}`,
+      `http://localhost:8080/post/${this.state.session_id()}/${this.state.value}`,
     );
     this.setState({ value: "" })
   };
 
   fetchData = async (query) => {
     const result = await axios(
-      `http://localhost:5000/${query}`,
+      `http://localhost:8080/query/${encodeURIComponent(query)}`,
     );
     return result.data;
   };
@@ -74,7 +75,7 @@ class Input extends Component {
       this.setState({ value: "" });
     } else {
       const retval = await this.fetchData(this.state.value + event.key);
-      console.log(this.state.value, retval.value);
+      //console.log(this.state.value, retval.value);
       this.setState({ value: retval.value, error: "" });
     };
   }
@@ -118,6 +119,7 @@ class Input extends Component {
 class App extends Component {
   state = {
     data: [],
+    session_id: null,
     message_list: [],
     req_data: null,
     in_text: [],
@@ -136,6 +138,15 @@ class App extends Component {
         this.setState({
           data: result,
         })
+      })
+
+    fetch('http://localhost:8080/new_session')
+      .then(result => result.json())
+      .then(result => {
+        this.setState({
+          session_id: result.session_id
+        })
+        console.log(this.state.session_id)
       })
 
     this.interval = setInterval(this.tick, this.state.delay)
@@ -178,6 +189,10 @@ class App extends Component {
     });
    }
 
+   getSessionId() {
+     return this.state.session_id;
+   }
+
   render() {
     // const PollingList = asyncPoll(10 * 1000, onPollInterval)(WrappedListComponent);
 
@@ -213,6 +228,7 @@ class App extends Component {
                 id={1}
                 label="Speak here"
                 predicted="OK"
+                session_id={this.getSessionId.bind(this)}
                 locked={false}
                 active={false}
               />

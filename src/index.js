@@ -1,4 +1,6 @@
-import riot from '../node_modules/riot/riot';
-import '../node_modules/riot-hot-reload/';
-import './tags/app.tag';
-riot.mount('app');
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import './static/css/styling.css'
+
+ReactDOM.render(<App />, document.getElementById('root'))
