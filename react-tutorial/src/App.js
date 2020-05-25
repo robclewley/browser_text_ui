@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import ScrollToBottom, { useScrollToBottom, useSticky } from 'react-scroll-to-bottom';
+import { animateScroll } from "react-scroll";
 //import { render } from "react-dom";
 //import { TransitionMotion, spring } from "react-motion";
 import axios from 'axios';
@@ -143,17 +143,21 @@ class App extends Component {
                   })
               }
               getDataRequest(callback);
+
+    this.scrollToBottom();
   }
   componentDidUpdate(prevProps, prevState) {
       if (prevState.delay !== this.state.delay) {
         clearInterval(this.interval);
         this.interval = setInterval(this.tick, this.state.delay);
       }
+      this.scrollToBottom();
   }
 
   componentWillUnmount() {
       clearInterval(this.interval);
   }
+
   tick = async () => {
     const resp = await getNewData()
     const list = resp.data.map((entry, index) => {
@@ -164,6 +168,12 @@ class App extends Component {
       message_list: <div>{list}</div>
     });
   }
+
+  scrollToBottom() {
+    animateScroll.scrollToBottom({
+      containerId: "msg_history"
+    });
+   }
 
   render() {
     // const PollingList = asyncPoll(10 * 1000, onPollInterval)(WrappedListComponent);
@@ -190,12 +200,11 @@ class App extends Component {
           </aside>
 
           <section className="col main">
-            <ScrollToBottom>
-            <div className="history">
+            <div className="history" id="msg_history">
               <h2>The Main Content Area</h2>
-              {this.state.message_list}
+                {this.state.message_list}
               </div>
-            </ScrollToBottom>
+
 
               <Input
                 id={1}
