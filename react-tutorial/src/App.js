@@ -70,11 +70,13 @@ class Input extends Component {
 
   handleKeyPress = async(event) => {
     if (event.key === "Enter") {
-      this.setState({ value: this.props.predicted });
-    }
-    const retval = await this.fetchData(this.state.value + event.key);
-    console.log(this.state.value, retval.value)
-    this.setState({ value: retval.value, error: "" });
+      this.postMessage();
+      this.setState({ value: "" });
+    } else {
+      const retval = await this.fetchData(this.state.value + event.key);
+      console.log(this.state.value, retval.value);
+      this.setState({ value: retval.value, error: "" });
+    };
   }
 
   render() {
@@ -96,6 +98,7 @@ class Input extends Component {
           value={value}
           placeholder={label}
           onChange={this.changeValue.bind(this)}
+          // should use keydown in the future
           onKeyPress={this.handleKeyPress.bind(this)}
           onFocus={() => !locked && this.setState({ active: true })}
           onBlur={() => !locked && this.setState({ active: false })}
