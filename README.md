@@ -1,2 +1,5 @@
 # browser_text_ui
-Simple browser text-based UI for game dev
+
+A multiplayer text-based UI in the browser for game dev experimentation.
+
+Currently based in React.

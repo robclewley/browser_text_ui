@@ -126,6 +126,7 @@ class Input extends Component {
         <label htmlFor={1} className={error && "error"}>
           {error || label}
         </label>
+        <br></br><br></br>
       <button onClick={this.postMessage.bind(this)}>
          Send message
        </button>
